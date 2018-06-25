@@ -18,23 +18,11 @@
 package com.lwgame.gdx.android;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.lwgame.gdx.LwApp;
+import com.lwgame.gdx.LwSampleApp;
 
 public class LwAndroidSampleLauncher extends LwAndroidBaseLauncher {
     @Override
     protected ApplicationListener createApplicationListener() {
-        return new LwApp() {
-            @Override
-            protected void onCreate() {
-            }
-            @Override
-            protected int getUIWidth() {
-                return 640;
-            }
-            @Override
-            protected int getUIHeight() {
-                return 1136;
-            }
-        };
+        return new LwSampleApp();
     }
 }

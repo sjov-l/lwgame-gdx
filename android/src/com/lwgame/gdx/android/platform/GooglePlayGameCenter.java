@@ -36,7 +36,7 @@ import com.google.android.gms.games.LeaderboardsClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.lwgame.gdx.ActivityCodes;
+import com.lwgame.gdx.android.ActivityCodes;
 import com.lwgame.gdx.platform.GameCenter;
 
 public class GooglePlayGameCenter implements GameCenter, AndroidEventListener {

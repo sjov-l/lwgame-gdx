@@ -20,7 +20,7 @@ package com.lwgame.gdx.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.lwgame.gdx.Lw;
-import com.lwgame.gdx.LwApp;
+import com.lwgame.gdx.LwSampleApp;
 import com.lwgame.gdx.conf.Configuration;
 import com.lwgame.gdx.desktop.ads.NoAds;
 import com.lwgame.gdx.desktop.billing.NoBilling;
@@ -30,26 +30,14 @@ import com.lwgame.gdx.desktop.platform.NoPlatform;
 public class LwDesktopBaseLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new LwApp() {
-
-			@Override
-			protected void onCreate() {
-				Lw.configuration = new Configuration();
-				Lw.billing = new NoBilling();
-				Lw.gameCenter = new NoGameCenter();
-				Lw.platform = new NoPlatform();
-				Lw.ads = new NoAds();
-			}
-
-			@Override
-			protected int getUIWidth() {
-				return 0;
-			}
-
-			@Override
-			protected int getUIHeight() {
-				return 0;
-			}
-		}, config);
+		config.width = (int) (640 * 0.8);
+		config.height = (int) (1136 * 0.8);
+		config.samples = 2;
+        Lw.configuration = new Configuration();
+        Lw.billing = new NoBilling();
+        Lw.gameCenter = new NoGameCenter();
+        Lw.platform = new NoPlatform();
+        Lw.ads = new NoAds();
+        new LwjglApplication(new LwSampleApp(), config);
 	}
 }

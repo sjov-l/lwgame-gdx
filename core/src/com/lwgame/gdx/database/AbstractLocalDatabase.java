@@ -31,14 +31,20 @@ public abstract class AbstractLocalDatabase implements Database {
     private FileHandle file;
     private Preferences preferences;
     private ObjectMap<String, String> data;
+    private boolean flushImmediately;
 
     protected abstract FileHandle getLocalFile();
     protected abstract Preferences getPreferences();
 
     public AbstractLocalDatabase() {
-        file = getLocalFile();
-        preferences = getPreferences();
-        data = new ObjectMap<String, String>(16);
+        this(false);
+    }
+
+    public AbstractLocalDatabase(boolean flushImmediately) {
+        this.file = getLocalFile();
+        this.preferences = getPreferences();
+        this.data = new ObjectMap<String, String>(16);
+        this.flushImmediately = flushImmediately;
         doLoad();
     }
 
@@ -114,7 +120,7 @@ public abstract class AbstractLocalDatabase implements Database {
 
     @Override
     public byte getByte(String key, byte defaultValue) {
-        String v = data.get(key);
+        String v = getString(key);
         return v != null ? Byte.parseByte(v) : defaultValue;
     }
 
@@ -125,7 +131,7 @@ public abstract class AbstractLocalDatabase implements Database {
 
     @Override
     public boolean getBoolean(String key, boolean defaultValue) {
-        String v = data.get(key);
+        String v = getString(key);
         return v != null ? "1".equals(v) : defaultValue;
     }
 
@@ -136,7 +142,7 @@ public abstract class AbstractLocalDatabase implements Database {
 
     @Override
     public short getShort(String key, short defaultValue) {
-        String v = data.get(key);
+        String v = getString(key);
         return v != null ? Short.parseShort(v) : defaultValue;
     }
 
@@ -147,7 +153,7 @@ public abstract class AbstractLocalDatabase implements Database {
 
     @Override
     public int getInt(String key, int defaultValue) {
-        String v = data.get(key);
+        String v = getString(key);
         return v != null ? Integer.parseInt(v) : defaultValue;
     }
 
@@ -158,7 +164,7 @@ public abstract class AbstractLocalDatabase implements Database {
 
     @Override
     public float getFloat(String key, float defaultValue) {
-        String v = data.get(key);
+        String v = getString(key);
         return v != null ? Float.parseFloat(v) : defaultValue;
     }
 
@@ -169,7 +175,7 @@ public abstract class AbstractLocalDatabase implements Database {
 
     @Override
     public long getLong(String key, long defaultValue) {
-        String v = data.get(key);
+        String v = getString(key);
         return v != null ? Long.parseLong(v) : defaultValue;
     }
 
@@ -180,13 +186,13 @@ public abstract class AbstractLocalDatabase implements Database {
 
     @Override
     public double getDouble(String key, double defaultValue) {
-        String v = data.get(key);
+        String v = getString(key);
         return v != null ? Double.parseDouble(v) : defaultValue;
     }
 
     @Override
     public String getString(String key) {
-        return data.get(key);
+        return getString(key, null);
     }
 
     @Override
@@ -197,42 +203,45 @@ public abstract class AbstractLocalDatabase implements Database {
 
     @Override
     public void putByte(String key, byte value) {
-        data.put(key, String.valueOf(value));
+        putString(key, String.valueOf(value));
     }
 
     @Override
     public void putBoolean(String key, boolean value) {
-        data.put(key, value ? "1" : "0");
+        putString(key, value ? "1" : "0");
     }
 
     @Override
     public void putShort(String key, short value) {
-        data.put(key, String.valueOf(value));
+        putString(key, String.valueOf(value));
     }
 
     @Override
     public void putInt(String key, int value) {
-        data.put(key, String.valueOf(value));
+        putString(key, String.valueOf(value));
     }
 
     @Override
     public void putFloat(String key, float value) {
-        data.put(key, String.valueOf(value));
+        putString(key, String.valueOf(value));
     }
 
     @Override
     public void putDouble(String key, double value) {
-        data.put(key, String.valueOf(value));
+        putString(key, String.valueOf(value));
     }
 
     @Override
     public void putString(String key, String value) {
         if (value == null) data.remove(key);
         else               data.put(key, value);
+
+        if (flushImmediately) flush();
     }
 
     @Override
     public void remove(String key) {
         data.remove(key);
+        if (flushImmediately) flush();
     }
 }
