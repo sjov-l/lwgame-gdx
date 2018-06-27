@@ -30,6 +30,13 @@ android {
         }
     }
 }
+ext {
+    MVN_PRJ_ARTIFACTID = 'android'
+    MVN_PRJ_NAME = 'android'
+}
+
+apply from: '../install.gradle'
+apply from: 'bintray.gradle'
 
 
 // called every time gradle gets executed, takes the native dependencies of
@@ -78,7 +85,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.lwgame.gdx/com.lwgame.gdx.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.lwgame.gdx/com.lwgame.gdx.android.LwAndroidSampleLauncher'
 }
 
 // sets up the Android Eclipse project, using the old Ant based build.

@@ -1,0 +1,38 @@
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = MVN_PRJ_GROUPID
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'jar'
+                groupId MVN_PRJ_GROUPID
+                artifactId MVN_PRJ_ARTIFACTID
+
+                name MVN_PRJ_NAME
+                description MVN_PRJ_DESC
+                url MVN_PRJ_URL
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'ocoao'
+                        name 'Li Yang'
+                        email 'ocoao.li@gmail.com'
+                    }
+                }
+                scm {
+                    connection MVN_PRJ_CONN
+                    developerConnection MVN_PRJ_CONN
+                    url MVN_PRJ_URL
+                }
+            }
+        }
+    }
+}

@@ -61,3 +61,11 @@ eclipse {
         natures 'org.multi-os-engine.project'
     }
 }
+
+ext {
+    MVN_PRJ_ARTIFACTID = 'ios-moe'
+    MVN_PRJ_NAME = 'ios-moe'
+}
+
+apply from: '../install.gradle'
+apply from: '../bintray.gradle'

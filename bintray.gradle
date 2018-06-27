@@ -1,0 +1,48 @@
+// bintray for core, desktop, ios-moe
+apply plugin: 'com.jfrog.bintray'
+
+version = MVN_PRJ_VERSION
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+// Bintray
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    configurations = ['archives']
+    pkg {
+        repo = MVN_PRJ_REPO
+        //userOrg = properties.getProperty("bintray.org")
+        name = MVN_PRJ_NAME
+        desc = MVN_PRJ_DESC
+        websiteUrl = MVN_PRJ_URL
+        issueTrackerUrl = MVN_PRJ_ISSUE
+        vcsUrl = MVN_PRJ_CONN
+        licenses = ["Apache-2.0"]
+        publish = true
+        publicDownloadNumbers = true
+    }
+}
+
+javadoc {
+    options {
+        encoding 'utf-8'
+        charSet 'utf-8'
+    }
+}

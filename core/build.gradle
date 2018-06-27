@@ -9,3 +9,11 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 eclipse.project {
     name = appName + "-core"
 }
+
+ext {
+    MVN_PRJ_ARTIFACTID = 'core'
+    MVN_PRJ_NAME = 'core'
+}
+
+apply from: '../install.gradle'
+apply from: '../bintray.gradle'
