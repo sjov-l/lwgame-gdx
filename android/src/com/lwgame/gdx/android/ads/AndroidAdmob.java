@@ -42,7 +42,6 @@ public class AndroidAdmob implements Ads {
     public AndroidAdmob(AndroidApplication context) {
         this.context = context;
         initialize();
-        Lw.ads = this;
     }
 
     private void initialize() {

@@ -44,32 +44,28 @@ public class AdmobRewardedVideoAdListener implements RewardedVideoAdListener {
 
     @Override
     public void onRewardedVideoStarted() {
-
     }
 
     @Override
     public void onRewardedVideoAdClosed() {
-
+        doLoad();
     }
 
     @Override
     public void onRewarded(RewardItem rewardItem) {
-
+        // do reward
     }
 
     @Override
     public void onRewardedVideoAdLeftApplication() {
-
     }
 
     @Override
     public void onRewardedVideoAdFailedToLoad(int i) {
-
     }
 
     @Override
     public void onRewardedVideoCompleted() {
-
     }
 
     private void doLoad() {
