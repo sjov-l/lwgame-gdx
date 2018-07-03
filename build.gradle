@@ -87,6 +87,7 @@ project(":android") {
         implementation "com.google.android.gms:play-services-games:$gmsVersion"
         implementation "com.google.android.gms:play-services-auth:$gmsVersion"
     }
+    //apply plugin: "com.google.gms.google-services"
 }
 
 project(":core") {

@@ -33,11 +33,11 @@ public class LwDesktopBaseLauncher {
 		config.width = (int) (640 * 0.8);
 		config.height = (int) (1136 * 0.8);
 		config.samples = 2;
+        new LwjglApplication(new LwSampleApp(), config);
         Lw.configuration = new Configuration();
         Lw.billing = new NoBilling();
         Lw.gameCenter = new NoGameCenter();
         Lw.platform = new NoPlatform();
         Lw.ads = new NoAds();
-        new LwjglApplication(new LwSampleApp(), config);
-	}
+    }
 }
