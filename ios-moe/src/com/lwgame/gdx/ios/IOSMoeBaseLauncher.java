@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.iosmoe.IOSApplication;
 import com.badlogic.gdx.backends.iosmoe.IOSApplicationConfiguration;
 import com.lwgame.gdx.Lw;
-import com.lwgame.gdx.LwApp;
 import com.lwgame.gdx.conf.Configuration;
 import com.lwgame.gdx.ios.ads.IOSAdmob;
 import com.lwgame.gdx.ios.billing.IOSBilling;
