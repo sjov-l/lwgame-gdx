@@ -11,8 +11,12 @@ eclipse.project {
 }
 
 ext {
-    MVN_PRJ_ARTIFACTID = 'core'
-    MVN_PRJ_NAME = 'core'
+    MVN_PRJ_ARTIFACTID = 'lwgame-core'
+    MVN_PRJ_NAME = 'lwgame-core'
+}
+
+jar {
+    baseName = MVN_PRJ_ARTIFACTID
 }
 
 apply from: '../install.gradle'

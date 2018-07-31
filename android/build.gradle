@@ -31,12 +31,13 @@ android {
     }
 }
 ext {
-    MVN_PRJ_ARTIFACTID = 'android'
-    MVN_PRJ_NAME = 'android'
+    MVN_PRJ_ARTIFACTID = 'lwgame-android'
+    MVN_PRJ_NAME = 'lwgame-android'
 }
 
+apply plugin: "com.vanniktech.android.javadoc"
 apply from: '../install.gradle'
-apply from: 'bintray.gradle'
+apply from: '../bintray.gradle'
 
 
 // called every time gradle gets executed, takes the native dependencies of

@@ -1,20 +1,91 @@
-// bintray for core, desktop, ios-moe
 apply plugin: 'com.jfrog.bintray'
 
 version = MVN_PRJ_VERSION
 
 task sourcesJar(type: Jar) {
-    from sourceSets.main.java.srcDirs
+    if (MVN_PRJ_ARTIFACTID.endsWith("android")) {
+        from android.sourceSets.main.java.srcDirs
+    } else {
+        from sourceSets.main.java.srcDirs
+    }
+    baseName = MVN_PRJ_ARTIFACTID
     classifier = 'sources'
 }
 
+//------FOR ANDROID------
+if (MVN_PRJ_ARTIFACTID.endsWith("android")) {
+    // generate the jar file
+    task generateJar(dependsOn: ['compileReleaseJavaWithJavac'], type: Jar) {
+        from "$buildDir/intermediates/classes/release"
+        exclude "android/", "com/google/"
+        baseName = MVN_PRJ_ARTIFACTID
+    }
+
+    // generate the java doc files
+    task javadoc(dependsOn: ['generateReleaseJavadoc'], type: Javadoc) {
+        destinationDir = project.file("$buildDir/docs/javadoc/release")
+    }
+//    task javadoc(type: Javadoc) {
+//        source = android.sourceSets.main.java.srcDirs
+//        exclude '**/*.aidl'
+//        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//        classpath += project.files("$buildDir/intermediates/classes/release")
+//        afterEvaluate {
+//            classpath += project.configurations.compileClasspath
+//            // extra jar from aar
+//            def extractJar = { archive, entry, output ->
+//                if (!archive.exists()) {
+//                    throw new GradleException("archive $archive not found")
+//                }
+//                def zip = new java.util.zip.ZipFile(archive)
+//                zip.entries().each {
+//                    if (it.name == entry) {
+//                        def path = new java.io.File(output)
+//                        if (!path.exists()) {
+//                            path.getParentFile().mkdirs()
+//                            def buf = new byte[4096]
+//                            def is = zip.getInputStream(it)
+//                            def os = new java.io.FileOutputStream(path)
+//                            def len
+//                            while ((len = is.read(buf)) != -1) {
+//                                os.write(buf, 0, len)
+//                            }
+//                            os.flush()
+//                            os.close()
+//
+//                        }
+//                    }
+//                }
+//                zip.close()
+//            }
+//            def aarDependencies = classpath.filter {
+//                it.name.endsWith(".aar")
+//            }
+//            classpath -= aarDependencies
+//            aarDependencies.each { aar ->
+//                def outputPath = "$buildDir/tmp/exploded-aar/${aar.name.replace('.aar', '.jar')}"
+//                extractJar(aar, 'classes.jar', outputPath)
+//                classpath += files(outputPath)
+//            }
+//        }
+//    }
+//    javadoc.doLast {
+//        delete "$buildDir/tmp/exploded-aar"
+//    }
+}
+//------FOR ANDROID------
+
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
+    baseName = MVN_PRJ_ARTIFACTID
     from javadoc.destinationDir
 }
 artifacts {
     archives javadocJar
     archives sourcesJar
+    if (MVN_PRJ_ARTIFACTID.endsWith("android")) {
+        archives generateJar
+    }
 }
 
 // Bintray
