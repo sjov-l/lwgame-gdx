@@ -46,8 +46,7 @@ allprojects {
 
 project(":desktop") {
     apply plugin: "java"
-
-
+    archivesBaseName = 'lwgame-desktop'
     dependencies {
         implementation project(":core")
         implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
@@ -60,7 +59,7 @@ project(":desktop") {
 
 project(":android") {
     apply plugin: "android"
-
+    archivesBaseName = 'lwgame-android'
     configurations { natives }
 
     dependencies {
@@ -93,8 +92,7 @@ project(":android") {
 
 project(":core") {
     apply plugin: "java"
-
-
+    archivesBaseName = 'lwgame-core'
     dependencies {
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
@@ -105,7 +103,7 @@ project(":core") {
 
 project(":ios-moe") {
     apply plugin: "moe"
-
+    archivesBaseName = 'lwgame-ios-moe'
     configurations { natives }
 
     dependencies {

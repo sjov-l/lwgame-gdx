@@ -10,14 +10,5 @@ eclipse.project {
     name = appName + "-core"
 }
 
-ext {
-    MVN_PRJ_ARTIFACTID = 'lwgame-core'
-    MVN_PRJ_NAME = 'lwgame-core'
-}
-
-jar {
-    baseName = MVN_PRJ_ARTIFACTID
-}
-
 apply from: '../install.gradle'
 apply from: '../bintray.gradle'

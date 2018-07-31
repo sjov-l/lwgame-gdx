@@ -63,14 +63,5 @@ eclipse {
     }
 }
 
-ext {
-    MVN_PRJ_ARTIFACTID = 'lwgame-ios-moe'
-    MVN_PRJ_NAME = 'lwgame-ios-moe'
-}
-
-jar {
-    baseName = MVN_PRJ_ARTIFACTID
-}
-
 apply from: '../install.gradle'
 apply from: '../bintray.gradle'

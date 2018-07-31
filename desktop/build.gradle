@@ -59,14 +59,5 @@ task afterEclipseImport(description: "Post processing after project generation",
   }
 }
 
-ext {
-    MVN_PRJ_ARTIFACTID = 'lwgame-desktop'
-    MVN_PRJ_NAME = 'lwgame-desktop'
-}
-
-jar {
-    baseName = MVN_PRJ_ARTIFACTID
-}
-
 apply from: '../install.gradle'
 apply from: '../bintray.gradle'

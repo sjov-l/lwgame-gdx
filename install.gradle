@@ -7,10 +7,10 @@ install {
         pom {
             project {
                 packaging 'jar'
-                groupId MVN_PRJ_GROUPID
-                artifactId MVN_PRJ_ARTIFACTID
+                groupId project.group
+                artifactId project.archivesBaseName
 
-                name MVN_PRJ_NAME
+                name project.archivesBaseName
                 description MVN_PRJ_DESC
                 url MVN_PRJ_URL
 

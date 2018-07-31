@@ -3,22 +3,22 @@ apply plugin: 'com.jfrog.bintray'
 version = MVN_PRJ_VERSION
 
 task sourcesJar(type: Jar) {
-    if (MVN_PRJ_ARTIFACTID.endsWith("android")) {
+    if (project.archivesBaseName.endsWith("android")) {
         from android.sourceSets.main.java.srcDirs
     } else {
         from sourceSets.main.java.srcDirs
     }
-    baseName = MVN_PRJ_ARTIFACTID
+//    baseName = MVN_PRJ_ARTIFACTID
     classifier = 'sources'
 }
 
 //------FOR ANDROID------
-if (MVN_PRJ_ARTIFACTID.endsWith("android")) {
+if (project.archivesBaseName.endsWith("android")) {
     // generate the jar file
     task generateJar(dependsOn: ['compileReleaseJavaWithJavac'], type: Jar) {
         from "$buildDir/intermediates/classes/release"
         exclude "android/", "com/google/"
-        baseName = MVN_PRJ_ARTIFACTID
+//        baseName = MVN_PRJ_ARTIFACTID
     }
 
     // generate the java doc files
@@ -77,13 +77,13 @@ if (MVN_PRJ_ARTIFACTID.endsWith("android")) {
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
-    baseName = MVN_PRJ_ARTIFACTID
+//    baseName = MVN_PRJ_ARTIFACTID
     from javadoc.destinationDir
 }
 artifacts {
     archives javadocJar
     archives sourcesJar
-    if (MVN_PRJ_ARTIFACTID.endsWith("android")) {
+    if (project.archivesBaseName.endsWith("android")) {
         archives generateJar
     }
 }
@@ -92,6 +92,7 @@ artifacts {
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
+def MVN_PRJ_NAME = project.archivesBaseName
 bintray {
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
