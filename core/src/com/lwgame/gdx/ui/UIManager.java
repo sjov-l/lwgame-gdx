@@ -30,6 +30,7 @@ public class UIManager implements InputProcessor, Disposable {
 
     private Viewport viewport;
     private Batch batch;
+    private boolean ownsBatch;
 
     private Array<UI> uis;
     private boolean invalid;
@@ -37,6 +38,7 @@ public class UIManager implements InputProcessor, Disposable {
 
     public UIManager(Viewport viewport) {
         this(viewport, new SpriteBatch());
+        ownsBatch = true;
     }
 
     public UIManager(Viewport viewport, Batch batch) {
@@ -191,6 +193,8 @@ public class UIManager implements InputProcessor, Disposable {
     public void dispose() {
         for (int i = uis.size - 1; i >= 0; i--)
             uis.get(i).dispose();
+        if (ownsBatch)
+            batch.dispose();
     }
 
 }
