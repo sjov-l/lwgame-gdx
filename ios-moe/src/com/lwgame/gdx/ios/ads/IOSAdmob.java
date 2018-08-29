@@ -82,6 +82,7 @@ public class IOSAdmob implements Ads {
                 testDevicesArr.add(dev);
             }
         }
+        req.setTestDevices(testDevicesArr);
         return req;
     }
 
