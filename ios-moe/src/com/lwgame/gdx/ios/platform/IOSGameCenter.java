@@ -166,7 +166,7 @@ public class IOSGameCenter implements GameCenter {
 
     @Override
     public void goMarketRating() {
-        String url = "itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=" + Lw.configuration.getString("ios.appstoreId");
+        String url = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=" + Lw.configuration.getString("ios.appstoreId");
         UIApplication.sharedApplication().openURL(NSURL.URLWithString(url));
     }
 
@@ -175,7 +175,7 @@ public class IOSGameCenter implements GameCenter {
         NSArray activityItems = NSMutableArray.alloc().init();
         activityItems.add(title);
         activityItems.add(text);
-        activityItems.add(NSURL.URLWithString("itms-apps://itunes.apple.com/app/id" + Lw.configuration.getString("ios.appstoreId")));
+        activityItems.add(NSURL.URLWithString("itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=" + Lw.configuration.getString("ios.appstoreId")));
         UIActivityViewController activityViewController = UIActivityViewController.alloc().initWithActivityItemsApplicationActivities(activityItems, null);
         NSArray excludeTypes = NSMutableArray.alloc().init();
         excludeTypes.add(UIKit.UIActivityTypePrint());
