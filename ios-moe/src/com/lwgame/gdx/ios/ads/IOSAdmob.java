@@ -35,18 +35,18 @@ import apple.uikit.UIScreen;
 
 public class IOSAdmob implements Ads {
 
-    private IOSApplication app;
+    protected IOSApplication app;
 
-    private GADBannerView gadBannerView;
-    private IOSAdmobInterstitialDelegate gadInterstitialDelegate;
-    private IOSAdmobRewardVideoAdDelegate gadRewardVideoAdDelegate;
+    protected GADBannerView gadBannerView;
+    protected IOSAdmobInterstitialDelegate gadInterstitialDelegate;
+    protected IOSAdmobRewardVideoAdDelegate gadRewardVideoAdDelegate;
 
     public IOSAdmob(IOSApplication app) {
         this.app = app;
         initialize();
     }
 
-    private void initialize() {
+    protected void initialize() {
         String appId = Lw.configuration.getString("admob.appId");
         if (appId == null) return;
         GADMobileAds.configureWithApplicationID(appId);
@@ -88,6 +88,11 @@ public class IOSAdmob implements Ads {
 
     @Override
     public void show(int type) {
+        show(type, null);
+    }
+
+    @Override
+    public void show(int type, Listener listener) {
         switch (type) {
             case BANNER:
                 if (gadBannerView != null) {
@@ -103,6 +108,7 @@ public class IOSAdmob implements Ads {
                 break;
             case REWARDED_VIDEO:
                 if (gadRewardVideoAdDelegate != null && gadRewardVideoAdDelegate.getAd().isReady()) {
+                    gadRewardVideoAdDelegate.setListener((RewardedVideoListener) listener);
                     gadRewardVideoAdDelegate.getAd().presentFromRootViewController(app.getUIViewController());
                 }
                 break;

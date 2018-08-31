@@ -22,10 +22,17 @@ public interface Ads {
     int BANNER = 1, INTERSTITIAL = 2, REWARDED_VIDEO = 3;
 
     void show(int type);
+    void show(int type, Listener listener);
     void hide(int type);
     boolean isLoaded(int type);
     void resume();
     void pause();
     void destroy();
+
+    interface Listener {}
+
+    interface RewardedVideoListener extends Listener {
+        void onRewarded(String type, int amount);
+    }
 
 }

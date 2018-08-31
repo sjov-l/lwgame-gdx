@@ -8,6 +8,10 @@ public class NoAds implements Ads {
     }
 
     @Override
+    public void show(int type, Listener listener) {
+    }
+
+    @Override
     public void hide(int type) {
     }
 

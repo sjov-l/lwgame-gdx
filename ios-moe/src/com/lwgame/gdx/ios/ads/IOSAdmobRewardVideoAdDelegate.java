@@ -17,6 +17,7 @@
 
 package com.lwgame.gdx.ios.ads;
 
+import com.lwgame.gdx.ads.Ads;
 import com.lwgame.gdx.ios.bindings.googlemobileads.GADAdReward;
 import com.lwgame.gdx.ios.bindings.googlemobileads.GADRewardBasedVideoAd;
 import com.lwgame.gdx.ios.bindings.googlemobileads.protocol.GADRewardBasedVideoAdDelegate;
@@ -27,6 +28,7 @@ public class IOSAdmobRewardVideoAdDelegate implements GADRewardBasedVideoAdDeleg
 
     private String unitId;
     private GADRewardBasedVideoAd gadRewardBasedVideoAd;
+    private Ads.RewardedVideoListener listener;
 
     public IOSAdmobRewardVideoAdDelegate(String unitId) {
         this.unitId = unitId;
@@ -42,6 +44,10 @@ public class IOSAdmobRewardVideoAdDelegate implements GADRewardBasedVideoAdDeleg
     @Override
     public void rewardBasedVideoAdDidRewardUserWithReward(GADRewardBasedVideoAd rewardBasedVideoAd, GADAdReward reward) {
         // do reward
+        if (listener != null) {
+            listener.onRewarded(reward.type(), reward.amount().intValue());
+            listener = null;
+        }
     }
 
     @Override
@@ -72,4 +78,9 @@ public class IOSAdmobRewardVideoAdDelegate implements GADRewardBasedVideoAdDeleg
     public GADRewardBasedVideoAd getAd() {
         return gadRewardBasedVideoAd;
     }
+
+    public void setListener(Ads.RewardedVideoListener listener) {
+        this.listener = listener;
+    }
+
 }

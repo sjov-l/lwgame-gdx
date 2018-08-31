@@ -22,11 +22,13 @@ import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.lwgame.gdx.Lw;
+import com.lwgame.gdx.ads.Ads;
 
 public class AdmobRewardedVideoAdListener implements RewardedVideoAdListener {
 
     private String rewardedVideoAdId;
     private RewardedVideoAd rewardedVideoAd;
+    private Ads.RewardedVideoListener listener;
 
     public AdmobRewardedVideoAdListener(RewardedVideoAd rewardedVideoAd, String rewardedVideoAdId) {
         this.rewardedVideoAd = rewardedVideoAd;
@@ -54,6 +56,10 @@ public class AdmobRewardedVideoAdListener implements RewardedVideoAdListener {
     @Override
     public void onRewarded(RewardItem rewardItem) {
         // do reward
+        if (listener != null) {
+            listener.onRewarded(rewardItem.getType(), rewardItem.getAmount());
+            listener = null;
+        }
     }
 
     @Override
@@ -77,6 +83,10 @@ public class AdmobRewardedVideoAdListener implements RewardedVideoAdListener {
             }
         }
         rewardedVideoAd.loadAd(rewardedVideoAdId, builder.build());
+    }
+
+    public void setListener(Ads.RewardedVideoListener listener) {
+        this.listener = listener;
     }
 
 }

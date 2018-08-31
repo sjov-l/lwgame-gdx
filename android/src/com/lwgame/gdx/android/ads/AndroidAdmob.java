@@ -34,17 +34,17 @@ import com.lwgame.gdx.android.ads.AdmobRewardedVideoAdListener;
 
 public class AndroidAdmob implements Ads {
 
-    private AndroidApplication context;
-    private AdView bannerView;
-    private InterstitialAd interstitialAd;
-    private RewardedVideoAd rewardedVideoAd;
+    protected AndroidApplication context;
+    protected AdView bannerView;
+    protected InterstitialAd interstitialAd;
+    protected RewardedVideoAd rewardedVideoAd;
 
     public AndroidAdmob(AndroidApplication context) {
         this.context = context;
         initialize();
     }
 
-    private void initialize() {
+    protected void initialize() {
         String appId = Lw.configuration.getString("admob.appId");
         if (appId == null) return;
 
@@ -80,6 +80,11 @@ public class AndroidAdmob implements Ads {
 
     @Override
     public void show(int type) {
+        show(type, null);
+    }
+
+    @Override
+    public void show(int type, final Listener listener) {
         switch (type) {
             case BANNER:
                 if (bannerView != null) {
@@ -107,8 +112,10 @@ public class AndroidAdmob implements Ads {
                     context.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (rewardedVideoAd.isLoaded())
+                            if (rewardedVideoAd.isLoaded()) {
+                                ((AdmobRewardedVideoAdListener) rewardedVideoAd.getRewardedVideoAdListener()).setListener((RewardedVideoListener) listener);
                                 rewardedVideoAd.show();
+                            }
                         }
                     });
                 }
