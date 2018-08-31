@@ -20,6 +20,7 @@ package com.lwgame.gdx.android.ads;
 import android.graphics.Color;
 import android.view.View;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -135,14 +136,79 @@ public class AndroidAdmob implements Ads {
         }
     }
 
+    abstract class BooleanRunnable implements Runnable {
+        byte state; // (result << 1) | finish
+        void finish() {
+            state |= 1;
+        }
+        boolean isFinish() {
+            return (state & 1) != 0;
+        }
+        void setResult(boolean b) {
+            state |= b ? 2 : 0;
+        }
+        boolean getResult() {
+            return ((state >> 1) & 1) != 0;
+        }
+    }
+
     @Override
     public boolean isLoaded(int type) {
-        if (type == BANNER)
+        if (type == BANNER) {
             return bannerView != null;
-        if (type == INTERSTITIAL)
-            return interstitialAd != null && interstitialAd.isLoaded();
-        if (type == REWARDED_VIDEO)
-            return rewardedVideoAd != null && rewardedVideoAd.isLoaded();
+        }
+        if (type == INTERSTITIAL) {
+            if (interstitialAd == null) {
+                return false;
+            }
+            BooleanRunnable br = new BooleanRunnable() {
+                @Override
+                public void run() {
+                    setResult(interstitialAd.isLoaded());
+                    synchronized (this) {
+                        notify();
+                        finish();
+                    }
+                }
+            };
+            context.runOnUiThread(br);
+            synchronized (br) {
+                if (!br.isFinish()) {
+                    try {
+                        br.wait();
+                    } catch (InterruptedException e) {
+                        Gdx.app.error("AndroidAdmob", e.getMessage(), e);
+                    }
+                }
+            }
+            return br.getResult();
+        }
+        if (type == REWARDED_VIDEO) {
+            if (rewardedVideoAd == null) {
+                return false;
+            }
+            BooleanRunnable br = new BooleanRunnable() {
+                @Override
+                public void run() {
+                    setResult(rewardedVideoAd.isLoaded());
+                    synchronized (this) {
+                        notify();
+                        finish();
+                    }
+                }
+            };
+            context.runOnUiThread(br);
+            synchronized (br) {
+                if (!br.isFinish()) {
+                    try {
+                        br.wait();
+                    } catch (InterruptedException e) {
+                        Gdx.app.error("AndroidAdmob", e.getMessage(), e);
+                    }
+                }
+            }
+            return br.getResult();
+        }
         return false;
     }
 
