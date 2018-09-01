@@ -1,1 +1,1 @@
-# lwgame-gdx
+# A game framework based on libGDX
