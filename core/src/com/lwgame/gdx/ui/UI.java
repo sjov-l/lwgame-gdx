@@ -17,102 +17,17 @@
 
 package com.lwgame.gdx.ui;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.Disposable;
-import com.lwgame.gdx.Lw;
 
-public abstract class UI implements InputProcessor, Disposable {
+public interface UI extends InputProcessor, Disposable {
 
-    protected Stage stage;
-    protected boolean transparent;
-    protected Skin skin;
-    protected AssetManager assetManager;
-
-    void initialize(Stage stage) {
-        this.stage = stage;
-        this.skin = Lw.skin;
-        this.assetManager = Lw.assetManager;
-        create();
-    }
-
-    public boolean isTransparent() {
-        return transparent;
-    }
-
-    public void setTransparent(boolean transparent) {
-        this.transparent = transparent;
-    }
-
-    public void show() {
-        Lw.uiManager.add(this);
-    }
-
-    public void close() {
-        Lw.uiManager.remove(this);
-    }
-
-    public void render() {
-        stage.act();
-        stage.draw();
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        return stage.keyDown(keycode) || !isTransparent();
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        if (keycode == Input.Keys.BACK) {
-            close();
-            return true;
-        }
-        return stage.keyUp(keycode) || !isTransparent();
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return stage.keyTyped(character) || !isTransparent();
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return stage.touchDown(screenX, screenY, pointer, button) || !isTransparent();
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return stage.touchUp(screenX, screenY, pointer, button) || !isTransparent();
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return stage.touchDragged(screenX, screenY, pointer) || !isTransparent();
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return stage.mouseMoved(screenX, screenY) || !isTransparent();
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return stage.scrolled(amount) || !isTransparent();
-    }
-
-    @Override
-    public void dispose() {
-        destroy();
-        stage.dispose();
-    }
-
-    public abstract void create();
-    public abstract void resume();
-    public abstract void pause();
-    public abstract void destroy();
+    void render(Batch batch);
+    boolean isTransparent();
+    void show();
+    void close();
+    void pause();
+    void resume();
 
 }

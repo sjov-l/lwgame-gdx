@@ -19,13 +19,15 @@ package com.lwgame.gdx;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.lwgame.gdx.ui.AbstractUI;
+import com.lwgame.gdx.ui.StageUI;
 import com.lwgame.gdx.ui.UI;
 
 public class LwSampleApp extends LwApp {
 
     @Override
     protected void onCreate() {
-        new UI() {
+        new StageUI() {
             private Texture texture;
             @Override
             public void create() {
@@ -34,29 +36,27 @@ public class LwSampleApp extends LwApp {
                 image.setPosition((stage.getWidth() - image.getWidth()) / 2, (stage.getHeight() - image.getHeight()) / 2);
                 stage.addActor(image);
             }
-
-            @Override
-            public void resume() {
-            }
-
             @Override
             public void pause() {
             }
-
+            @Override
+            public void resume() {
+            }
             @Override
             public void destroy() {
                 texture.dispose();
             }
         }.show();
+
     }
 
     @Override
-    protected int getUIWidth() {
-        return 640;
+    protected int getResolutionWidth() {
+        return 720;
     }
 
     @Override
-    protected int getUIHeight() {
-        return 1136;
+    protected int getResolutionHeight() {
+        return 1280;
     }
 }

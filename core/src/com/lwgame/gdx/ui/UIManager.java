@@ -28,13 +28,13 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class UIManager implements InputProcessor, Disposable {
 
-    private Viewport viewport;
-    private Batch batch;
-    private boolean ownsBatch;
+    protected Viewport viewport;
+    protected Batch batch;
+    protected boolean ownsBatch;
 
-    private Array<UI> uis;
-    private boolean invalid;
-    private int beginRenderUiIndex;
+    protected Array<UI> uis;
+    protected boolean invalid;
+    protected int beginRenderUiIndex;
 
     public UIManager(Viewport viewport) {
         this(viewport, new SpriteBatch());
@@ -55,7 +55,6 @@ public class UIManager implements InputProcessor, Disposable {
     }
 
     public void add(UI ui) {
-        ui.initialize(new Stage(viewport, batch));
         uis.add(ui);
         invalidate();
     }
@@ -85,8 +84,9 @@ public class UIManager implements InputProcessor, Disposable {
 
     public void render() {
         validate();
+        final Batch batch = this.batch;
         for (int i = beginRenderUiIndex, n = uis.size; i < n; i++) {
-            uis.get(i).render();
+            uis.get(i).render(batch);
         }
     }
 

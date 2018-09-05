@@ -40,7 +40,7 @@ public abstract class LwApp extends ApplicationAdapter {
 		Lw.skin = new Skin();
 		Lw.assetManager = new AssetManager();
 		Texture.setAssetManager(Lw.assetManager);
-		Lw.uiManager = new UIManager(new ExtendViewport(getUIWidth(), getUIHeight()));
+		Lw.uiManager = new UIManager(new ExtendViewport(getResolutionWidth(), getResolutionHeight()));
 
 		onCreate();
 	}
@@ -67,7 +67,7 @@ public abstract class LwApp extends ApplicationAdapter {
 	}
 
 	protected abstract void onCreate();
-	protected abstract int getUIWidth();
-	protected abstract int getUIHeight();
+	protected abstract int getResolutionWidth();
+	protected abstract int getResolutionHeight();
 
 }
