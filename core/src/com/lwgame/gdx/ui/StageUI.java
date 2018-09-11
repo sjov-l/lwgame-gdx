@@ -86,6 +86,18 @@ public abstract class StageUI extends AbstractUI {
     }
 
     @Override
+    public void create() {
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
     public void dispose() {
         stage.dispose();
     }

@@ -19,9 +19,7 @@ package com.lwgame.gdx;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.lwgame.gdx.ui.AbstractUI;
 import com.lwgame.gdx.ui.StageUI;
-import com.lwgame.gdx.ui.UI;
 
 public class LwSampleApp extends LwApp {
 
@@ -37,13 +35,8 @@ public class LwSampleApp extends LwApp {
                 stage.addActor(image);
             }
             @Override
-            public void pause() {
-            }
-            @Override
-            public void resume() {
-            }
-            @Override
-            public void destroy() {
+            public void dispose() {
+                super.dispose();
                 texture.dispose();
             }
         }.show();
