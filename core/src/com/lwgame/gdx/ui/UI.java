@@ -27,7 +27,9 @@ public interface UI extends InputProcessor, Disposable {
     boolean isTransparent();
     void show();
     void close();
+
+    void create();
     void pause();
     void resume();
-
+    void dispose();
 }

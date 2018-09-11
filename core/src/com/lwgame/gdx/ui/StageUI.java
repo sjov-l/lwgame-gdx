@@ -33,7 +33,6 @@ public abstract class StageUI extends AbstractUI {
         this.stage = new Stage(Lw.uiManager.viewport, Lw.uiManager.batch);
         this.skin = Lw.skin;
         this.assetManager = Lw.assetManager;
-        create();
     }
 
     @Override
@@ -88,11 +87,7 @@ public abstract class StageUI extends AbstractUI {
 
     @Override
     public void dispose() {
-        destroy();
         stage.dispose();
     }
-
-    public abstract void create();
-    public abstract void destroy();
 
 }
