@@ -75,14 +75,16 @@ public class IOSAdmob implements Ads {
     static GADRequest newGADRequest() {
         GADRequest req = GADRequest.request();
         NSArray testDevicesArr = NSMutableArray.alloc().init();
-        testDevicesArr.add(GoogleMobileAds.kGADSimulatorID());
         String[] testDevices = Lw.configuration.getArray("admob.testDevices");
         if (testDevices != null) {
+            testDevicesArr.add(GoogleMobileAds.kGADSimulatorID());
             for (String dev : testDevices) {
                 testDevicesArr.add(dev);
             }
         }
-        req.setTestDevices(testDevicesArr);
+        if (!testDevicesArr.isEmpty()) {
+            req.setTestDevices(testDevicesArr);
+        }
         return req;
     }
 
