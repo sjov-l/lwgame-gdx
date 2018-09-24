@@ -25,9 +25,8 @@ public class IOSAdmobInterstitialDelegate implements GADInterstitialDelegate {
 
     private GADInterstitial gadInterstitial;
 
-    public IOSAdmobInterstitialDelegate(GADInterstitial gadInterstitial) {
-        this.gadInterstitial = gadInterstitial;
-        doLoad();
+    public IOSAdmobInterstitialDelegate(String unitId) {
+        doLoad(unitId);
     }
 
     @Override
@@ -56,11 +55,11 @@ public class IOSAdmobInterstitialDelegate implements GADInterstitialDelegate {
 
     @Override
     public void interstitialDidDismissScreen(GADInterstitial ad) {
-        this.gadInterstitial = GADInterstitial.alloc().initWithAdUnitID(ad.adUnitID());
-        doLoad();
+        doLoad(ad.adUnitID());
     }
 
-    private void doLoad() {
+    private void doLoad(String unitId) {
+        gadInterstitial = GADInterstitial.alloc().initWithAdUnitID(unitId);
         gadInterstitial.setDelegate(this);
         gadInterstitial.loadRequest(IOSAdmob.newGADRequest());
     }

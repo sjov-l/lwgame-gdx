@@ -63,7 +63,7 @@ public class IOSAdmob implements Ads {
 
         String interstitialId = Lw.configuration.getString("admob.interstitialId");
         if (interstitialId != null) {
-            gadInterstitialDelegate = new IOSAdmobInterstitialDelegate(GADInterstitial.alloc().initWithAdUnitID(interstitialId));
+            gadInterstitialDelegate = new IOSAdmobInterstitialDelegate(interstitialId);
         }
 
         String rewardVideoAdId = Lw.configuration.getString("admob.rewardedVideoId");
