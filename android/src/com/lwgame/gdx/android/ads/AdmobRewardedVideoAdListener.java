@@ -31,10 +31,13 @@ public class AdmobRewardedVideoAdListener implements RewardedVideoAdListener, Ru
     private String rewardedVideoAdId;
     private RewardedVideoAd rewardedVideoAd;
     private Ads.RewardedVideoListener listener;
+    private int retryDelayMillis, retryMaxTimes;
 
     public AdmobRewardedVideoAdListener(RewardedVideoAd rewardedVideoAd, String rewardedVideoAdId) {
         this.rewardedVideoAd = rewardedVideoAd;
         this.rewardedVideoAdId = rewardedVideoAdId;
+        this.retryDelayMillis = Lw.configuration.getInt("admob.retryDelayMillis", 10000);
+        this.retryMaxTimes = Lw.configuration.getInt("admob.retryMaxTimes", 5);
         doLoad();
     }
 
@@ -71,9 +74,10 @@ public class AdmobRewardedVideoAdListener implements RewardedVideoAdListener, Ru
 
     @Override
     public void onRewardedVideoAdFailedToLoad(int errorCode) {
-        if (errorCode == AdRequest.ERROR_CODE_NO_FILL) {
+        if (errorCode == AdRequest.ERROR_CODE_NO_FILL && retryMaxTimes > 0) {
             Gdx.app.log("AdmobRewardedVideo", "load failed, retry 5 seconds later.");
-            ((AndroidApplicationBase) Gdx.app).getHandler().postDelayed(this, 5000);
+            ((AndroidApplicationBase) Gdx.app).getHandler().postDelayed(this, retryDelayMillis);
+            --retryMaxTimes;
         }
     }
 
