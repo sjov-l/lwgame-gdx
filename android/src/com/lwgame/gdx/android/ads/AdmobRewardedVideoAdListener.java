@@ -17,6 +17,8 @@
 
 package com.lwgame.gdx.android.ads;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.android.AndroidApplicationBase;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
@@ -24,7 +26,7 @@ import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.lwgame.gdx.Lw;
 import com.lwgame.gdx.ads.Ads;
 
-public class AdmobRewardedVideoAdListener implements RewardedVideoAdListener {
+public class AdmobRewardedVideoAdListener implements RewardedVideoAdListener, Runnable {
 
     private String rewardedVideoAdId;
     private RewardedVideoAd rewardedVideoAd;
@@ -38,6 +40,7 @@ public class AdmobRewardedVideoAdListener implements RewardedVideoAdListener {
 
     @Override
     public void onRewardedVideoAdLoaded() {
+        Gdx.app.log("AdmobRewardedVideo", "loaded");
     }
 
     @Override
@@ -67,7 +70,11 @@ public class AdmobRewardedVideoAdListener implements RewardedVideoAdListener {
     }
 
     @Override
-    public void onRewardedVideoAdFailedToLoad(int i) {
+    public void onRewardedVideoAdFailedToLoad(int errorCode) {
+        if (errorCode == AdRequest.ERROR_CODE_NO_FILL) {
+            Gdx.app.log("AdmobRewardedVideo", "load failed, retry 5 seconds later.");
+            ((AndroidApplicationBase) Gdx.app).getHandler().postDelayed(this, 5000);
+        }
     }
 
     @Override
@@ -89,4 +96,8 @@ public class AdmobRewardedVideoAdListener implements RewardedVideoAdListener {
         this.listener = listener;
     }
 
+    @Override
+    public void run() {
+        doLoad();
+    }
 }

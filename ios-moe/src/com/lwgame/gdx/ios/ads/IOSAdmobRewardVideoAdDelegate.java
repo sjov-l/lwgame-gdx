@@ -17,9 +17,12 @@
 
 package com.lwgame.gdx.ios.ads;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Timer;
 import com.lwgame.gdx.ads.Ads;
 import com.lwgame.gdx.ios.bindings.googlemobileads.GADAdReward;
 import com.lwgame.gdx.ios.bindings.googlemobileads.GADRewardBasedVideoAd;
+import com.lwgame.gdx.ios.bindings.googlemobileads.enums.GADErrorCode;
 import com.lwgame.gdx.ios.bindings.googlemobileads.protocol.GADRewardBasedVideoAdDelegate;
 
 import apple.foundation.NSError;
@@ -39,6 +42,20 @@ public class IOSAdmobRewardVideoAdDelegate implements GADRewardBasedVideoAdDeleg
 
     @Override
     public void rewardBasedVideoAdDidFailToLoadWithError(GADRewardBasedVideoAd rewardBasedVideoAd, NSError error) {
+        if (error == null) {
+            Gdx.app.log("AdmobRewardedVideo", "load failed with unknown error.");
+            return;
+        }
+        long code = error.code();
+        if (code == GADErrorCode.NoFill || code == GADErrorCode.Timeout) {
+            Gdx.app.log("AdmobRewardedVideo", "load failed, retry 5 seconds later.");
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    gadRewardBasedVideoAd.loadRequestWithAdUnitID(IOSAdmob.newGADRequest(), unitId);
+                }
+            }, 5);
+        }
     }
 
     @Override
@@ -65,6 +82,7 @@ public class IOSAdmobRewardVideoAdDelegate implements GADRewardBasedVideoAdDeleg
 
     @Override
     public void rewardBasedVideoAdDidReceiveAd(GADRewardBasedVideoAd rewardBasedVideoAd) {
+        Gdx.app.log("AdmobRewardedVideo", "loaded");
     }
 
     @Override
