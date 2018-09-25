@@ -52,13 +52,13 @@ public class IOSAdmobRewardVideoAdDelegate implements GADRewardBasedVideoAdDeleg
         }
         long code = error.code();
         if (/*(code == GADErrorCode.NoFill || code == GADErrorCode.Timeout) && */retryTimes < retryMaxTimes) {
-            Gdx.app.log("AdmobRewardedVideo", "load failed, retry 5 seconds later. errorCode=" + code);
+            Gdx.app.log("AdmobRewardedVideo", "load failed, retry " + retryDelayMillis + " millis later. errorCode=" + code);
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
                     gadRewardBasedVideoAd.loadRequestWithAdUnitID(IOSAdmob.newGADRequest(), unitId);
                 }
-            }, retryDelayMillis / 5f);
+            }, retryDelayMillis / 1000f);
             ++retryTimes;
         }
     }
