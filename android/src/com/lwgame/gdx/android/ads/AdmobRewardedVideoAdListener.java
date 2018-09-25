@@ -74,8 +74,8 @@ public class AdmobRewardedVideoAdListener implements RewardedVideoAdListener, Ru
 
     @Override
     public void onRewardedVideoAdFailedToLoad(int errorCode) {
-        if (errorCode == AdRequest.ERROR_CODE_NO_FILL && retryMaxTimes > 0) {
-            Gdx.app.log("AdmobRewardedVideo", "load failed, retry 5 seconds later.");
+        if (/*errorCode == AdRequest.ERROR_CODE_NO_FILL && */retryMaxTimes > 0) {
+            Gdx.app.log("AdmobRewardedVideo", "load failed, retry 5 seconds later. errorCode=" + errorCode);
             ((AndroidApplicationBase) Gdx.app).getHandler().postDelayed(this, retryDelayMillis);
             --retryMaxTimes;
         }
