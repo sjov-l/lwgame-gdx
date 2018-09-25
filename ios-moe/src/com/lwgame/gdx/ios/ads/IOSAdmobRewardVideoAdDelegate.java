@@ -23,7 +23,6 @@ import com.lwgame.gdx.Lw;
 import com.lwgame.gdx.ads.Ads;
 import com.lwgame.gdx.ios.bindings.googlemobileads.GADAdReward;
 import com.lwgame.gdx.ios.bindings.googlemobileads.GADRewardBasedVideoAd;
-import com.lwgame.gdx.ios.bindings.googlemobileads.enums.GADErrorCode;
 import com.lwgame.gdx.ios.bindings.googlemobileads.protocol.GADRewardBasedVideoAdDelegate;
 
 import apple.foundation.NSError;
@@ -33,7 +32,7 @@ public class IOSAdmobRewardVideoAdDelegate implements GADRewardBasedVideoAdDeleg
     private String unitId;
     private GADRewardBasedVideoAd gadRewardBasedVideoAd;
     private Ads.RewardedVideoListener listener;
-    private int retryDelayMillis, retryMaxTimes;
+    private int retryDelayMillis, retryMaxTimes, retryTimes;
 
     public IOSAdmobRewardVideoAdDelegate(String unitId) {
         this.unitId = unitId;
@@ -42,6 +41,7 @@ public class IOSAdmobRewardVideoAdDelegate implements GADRewardBasedVideoAdDeleg
         this.gadRewardBasedVideoAd.loadRequestWithAdUnitID(IOSAdmob.newGADRequest(), unitId);
         this.retryDelayMillis = Lw.configuration.getInt("admob.retryDelayMillis", 10000);
         this.retryMaxTimes = Lw.configuration.getInt("admob.retryMaxTimes", 5);
+        this.retryTimes = 0;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class IOSAdmobRewardVideoAdDelegate implements GADRewardBasedVideoAdDeleg
             return;
         }
         long code = error.code();
-        if (/*(code == GADErrorCode.NoFill || code == GADErrorCode.Timeout) && */retryMaxTimes > 0) {
+        if (/*(code == GADErrorCode.NoFill || code == GADErrorCode.Timeout) && */retryTimes < retryMaxTimes) {
             Gdx.app.log("AdmobRewardedVideo", "load failed, retry 5 seconds later. errorCode=" + code);
             Timer.schedule(new Timer.Task() {
                 @Override
@@ -59,7 +59,7 @@ public class IOSAdmobRewardVideoAdDelegate implements GADRewardBasedVideoAdDeleg
                     gadRewardBasedVideoAd.loadRequestWithAdUnitID(IOSAdmob.newGADRequest(), unitId);
                 }
             }, retryDelayMillis / 5f);
-            --retryMaxTimes;
+            ++retryTimes;
         }
     }
 
@@ -87,6 +87,7 @@ public class IOSAdmobRewardVideoAdDelegate implements GADRewardBasedVideoAdDeleg
 
     @Override
     public void rewardBasedVideoAdDidReceiveAd(GADRewardBasedVideoAd rewardBasedVideoAd) {
+        retryTimes = 0;
         Gdx.app.log("AdmobRewardedVideo", "loaded");
     }
 
