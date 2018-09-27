@@ -74,7 +74,7 @@ public class AndroidAdmob implements Ads {
         bannerView.setBackgroundColor(Color.BLACK);
 
         bannerView.setVisibility(View.GONE);
-        bannerView.loadAd(new AdRequest.Builder().build());
+        bannerView.loadAd(newAdRequest());
 
         return bannerView;
     }
@@ -232,6 +232,17 @@ public class AndroidAdmob implements Ads {
 
     public View getBannerView() {
         return bannerView;
+    }
+
+    protected static AdRequest newAdRequest() {
+        AdRequest.Builder builder = new AdRequest.Builder();
+        String[] testDevices = Lw.configuration.getArray("admob.testDevices");
+        if (testDevices != null) {
+            for (String testDevice : testDevices) {
+                builder.addTestDevice(testDevice);
+            }
+        }
+        return builder.build();
     }
 
 }

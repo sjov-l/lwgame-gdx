@@ -88,14 +88,7 @@ public class AdmobRewardedVideoAdListener implements RewardedVideoAdListener, Ru
     }
 
     private void doLoad() {
-        AdRequest.Builder builder = new AdRequest.Builder();
-        String[] testDevices = Lw.configuration.getArray("admob.testDevices");
-        if (testDevices != null) {
-            for (String testDevice : testDevices) {
-                builder.addTestDevice(testDevice);
-            }
-        }
-        rewardedVideoAd.loadAd(rewardedVideoAdId, builder.build());
+        rewardedVideoAd.loadAd(rewardedVideoAdId, AndroidAdmob.newAdRequest());
     }
 
     public void setListener(Ads.RewardedVideoListener listener) {

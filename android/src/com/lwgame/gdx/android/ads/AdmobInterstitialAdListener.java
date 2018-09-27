@@ -17,21 +17,38 @@
 
 package com.lwgame.gdx.android.ads;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.android.AndroidApplicationBase;
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.lwgame.gdx.Lw;
 
-public class AdmobInterstitialAdListener extends AdListener {
+public class AdmobInterstitialAdListener extends AdListener implements Runnable {
 
     private InterstitialAd interstitialAd;
+    private int retryDelayMillis, retryMaxTimes, retryTimes;
 
     public AdmobInterstitialAdListener(InterstitialAd interstitialAd) {
         this.interstitialAd = interstitialAd;
+        this.retryDelayMillis = Lw.configuration.getInt("admob.retryDelayMillis", 10000);
+        this.retryMaxTimes = Lw.configuration.getInt("admob.retryMaxTimes", 5);
+        this.retryTimes = 0;
         doLoad();
     }
 
     @Override
     public void onAdLoaded() {
+        retryTimes = 0;
+        Gdx.app.log("AdmobInterstitial", "loaded");
+    }
+
+    @Override
+    public void onAdFailedToLoad(int errorCode) {
+        if (retryTimes < retryMaxTimes) {
+            Gdx.app.log("AdmobInterstitial", "load failed, retry " + retryDelayMillis + " millis later. errorCode=" + errorCode);
+            ((AndroidApplicationBase) Gdx.app).getHandler().postDelayed(this, retryDelayMillis);
+            ++retryTimes;
+        }
     }
 
     @Override
@@ -44,7 +61,11 @@ public class AdmobInterstitialAdListener extends AdListener {
     }
 
     private void doLoad() {
-        AdRequest req = new AdRequest.Builder().build();
-        interstitialAd.loadAd(req);
+        interstitialAd.loadAd(AndroidAdmob.newAdRequest());
+    }
+
+    @Override
+    public void run() {
+        doLoad();
     }
 }

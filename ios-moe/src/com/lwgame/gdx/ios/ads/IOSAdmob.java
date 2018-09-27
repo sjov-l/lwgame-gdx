@@ -21,7 +21,6 @@ import com.badlogic.gdx.backends.iosmoe.IOSApplication;
 import com.lwgame.gdx.Lw;
 import com.lwgame.gdx.ads.Ads;
 import com.lwgame.gdx.ios.bindings.googlemobileads.GADBannerView;
-import com.lwgame.gdx.ios.bindings.googlemobileads.GADInterstitial;
 import com.lwgame.gdx.ios.bindings.googlemobileads.GADMobileAds;
 import com.lwgame.gdx.ios.bindings.googlemobileads.GADRequest;
 import com.lwgame.gdx.ios.bindings.googlemobileads.c.GoogleMobileAds;
@@ -72,7 +71,7 @@ public class IOSAdmob implements Ads {
         }
     }
 
-    static GADRequest newGADRequest() {
+    protected static GADRequest newGADRequest() {
         GADRequest req = GADRequest.request();
         NSArray testDevicesArr = NSMutableArray.alloc().init();
         String[] testDevices = Lw.configuration.getArray("admob.testDevices");

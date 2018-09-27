@@ -17,6 +17,9 @@
 
 package com.lwgame.gdx.ios.ads;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Timer;
+import com.lwgame.gdx.Lw;
 import com.lwgame.gdx.ios.bindings.googlemobileads.GADInterstitial;
 import com.lwgame.gdx.ios.bindings.googlemobileads.GADRequestError;
 import com.lwgame.gdx.ios.bindings.googlemobileads.protocol.GADInterstitialDelegate;
@@ -24,13 +27,28 @@ import com.lwgame.gdx.ios.bindings.googlemobileads.protocol.GADInterstitialDeleg
 public class IOSAdmobInterstitialDelegate implements GADInterstitialDelegate {
 
     private GADInterstitial gadInterstitial;
+    private int retryDelayMillis, retryMaxTimes, retryTimes;
 
     public IOSAdmobInterstitialDelegate(String unitId) {
+        this.retryDelayMillis = Lw.configuration.getInt("admob.retryDelayMillis", 10000);
+        this.retryMaxTimes = Lw.configuration.getInt("admob.retryMaxTimes", 5);
+        this.retryTimes = 0;
         doLoad(unitId);
     }
 
     @Override
     public void interstitialDidFailToReceiveAdWithError(GADInterstitial ad, GADRequestError error) {
+        if (retryTimes < retryMaxTimes) {
+            Gdx.app.log("AdmobInterstitial", "load failed, retry " + retryDelayMillis + " millis later. errorCode=" + (error != null ? error.code() : "unknown"));
+            final String unitId = ad.adUnitID();
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    doLoad(unitId);
+                }
+            }, retryDelayMillis / 1000f);
+            ++retryTimes;
+        }
     }
 
     @Override
@@ -39,6 +57,8 @@ public class IOSAdmobInterstitialDelegate implements GADInterstitialDelegate {
 
     @Override
     public void interstitialDidReceiveAd(GADInterstitial ad) {
+        retryTimes = 0;
+        Gdx.app.log("AdmobInterstitial", "loaded");
     }
 
     @Override
