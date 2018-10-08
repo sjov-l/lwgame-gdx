@@ -114,6 +114,11 @@ public class GooglePlayGameCenter implements GameCenter, AndroidEventListener {
     }
 
     @Override
+    public String getAccountName() {
+        return account != null ? account.getDisplayName() : null;
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ActivityCodes.REQUEST_GOOGLE_ACCOUNT_SIGN_IN) {
 //            GoogleSignIn.getSignedInAccountFromIntent(data)

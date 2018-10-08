@@ -26,5 +26,6 @@ public interface GameCenter {
     void showLeaderboard(String leaderboardId);
     void goMarketRating();
     void shareGame(String title, String text);
+    String getAccountName();
 
 }

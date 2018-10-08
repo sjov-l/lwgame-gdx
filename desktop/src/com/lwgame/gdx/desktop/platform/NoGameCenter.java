@@ -47,4 +47,9 @@ public class NoGameCenter implements GameCenter {
     @Override
     public void shareGame(String title, String text) {
     }
+
+    @Override
+    public String getAccountName() {
+        return null;
+    }
 }

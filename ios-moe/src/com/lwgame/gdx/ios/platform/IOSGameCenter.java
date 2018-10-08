@@ -199,4 +199,10 @@ public class IOSGameCenter implements GameCenter {
             app.getUIViewController().presentViewControllerAnimatedCompletion(activityViewController, true, null);
         }
     }
+
+    @Override
+    public String getAccountName() {
+        final GKLocalPlayer player = GKLocalPlayer.localPlayer();
+        return player != null ? player.displayName() : null;
+    }
 }
